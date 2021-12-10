@@ -1,0 +1,71 @@
+<script>
+	$(function(){
+		
+		var category = $('.category');
+		
+		// 카테고리 요청하기
+		/*
+		$.ajax({
+			url:'/getCategories',
+			type:'get',
+			dataType:'json',
+			success: function(data){
+			}
+		});
+		*/
+		$.get('/Kmarket/getCategories',function(data){  //jquery ajax로 아래 html태그에 했던 th:each작업을 해주는것임   categoriesVo -> data 
+			
+			
+			//1차 카테고리 생성
+			// each() : data개수만큼 반복 i:1차카테고리의 개수    catesVo는 결국 CategoriesVo를 잡아준것.
+			$.each(data, function(i, catesVo){ 
+				
+					//카테고리 아이콘 생성 작업
+					var ico = '';
+					if(i == 0) ico = 'fas fa-shopping-bag';
+					if(i == 1) ico = 'fas fa-tshirt';
+					if(i == 2) ico = 'fas fa-baby-carriage';
+					if(i == 3) ico = 'fas fa-utensils';
+					if(i == 4) ico = 'fas fa-home';
+					if(i == 5) ico = 'fas fa-tv';
+					if(i == 6) ico = 'fas fa-running';
+					if(i == 7) ico = 'fas fa-car';
+					if(i == 8) ico = 'fas fa-book';
+				
+				
+				 //1차 카테고리(html태그를 여기로 끌어올림)
+				var tag = "<li>";
+					tag += "<a href='#'><i class='"+ico+"'></i>"+catesVo.tit1+"</a>";
+					tag += "<ol class='cate2s'></ol>";
+                    tag += "</li>";    
+                
+                category.append(tag); //1차 카테고리에 tag를 더하라 그럼 1차카테고리 목록들이 펼쳐짐
+                
+                //2차 카테고리 생성 
+                $.each(catesVo.cate2List, function(j, cate2Vo){
+                	
+                	var url = "/Kmarket/product/list?cate1="+cate2Vo.cate1+"&cate2="+cate2Vo.cate2; //카테고리마다 링크가 달라지겠지 파라미터필요!
+                	
+                	//해당카테고리의 ol태그를 선택해야하므로
+                	//이렇게하면 복수의 ol태그가 선택되거든 $('.cate2s').append("<li><a th:href='#'>"+cate2Vo.title+"</a></li>"); 이렇게하니까 2차태그가 전부다 나오네
+                	
+                	$('.cate2s').eq(i).append("<li><a href='"+url+"'>"+cate2Vo.title+"</a></li>"); //1차카테고리의 개수 : i   , url은 곧 클릭시 이동하는 주소!
+                	
+                });
+			});
+		});
+	});
+</script>
+         
+            
+                <!-- 카테고리 -->
+                <ul class="category">     
+                    <li><i class="fa fa-bars" aria-hidden="true"></i>카테고리</li>
+                    
+                   	
+                   	<!-- 여기있던 카테고리 태그들 제이쿼리로 작업 완료 -->
+                   	
+                   	
+                </ul>
+
+                
