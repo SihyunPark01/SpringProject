@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kmarket.dao.ProductDao">
+	
+	<!-- 
+	<insert id="insertProduct">
+		INSERT INTO `km_product` SET 
+		`cate1`=#{cate1},
+		`cate2`=#{cate2},
+		`name`=#{name},
+		`descript`=#{descript},
+		`company`=#{company},
+		`seller`=#{seller},
+		`price`=#{price},
+		`discount`=#{discount},
+		`point`=#{point},
+		`stock`=#{stock},
+		`sold`=#{sold},
+		`delivery`=#{delivery},
+		`hit`=#{hit},
+		`score`=#{score},
+		`review`=#{review},
+		`thumb1`=#{thumb1},
+		`thumb2`=#{thumb2},
+		`thumb3`=#{thumb3},
+		`detail`=#{detail},
+		`status`=#{status},
+		`dutyFree`=#{dutyFree},
+		`receipt`=#{receipt},
+		`bizClass`=#{bizClass},
+		`origin`=#{origin},
+		`ip`=#{ip},
+		`rdate`=NOW(),
+		`etc1`=#{etc1},
+		`etc2`=#{etc2},
+		`etc3`=#{etc3},
+		`etc4`=#{etc4},
+		`etc5`=#{etc5};	
+	</insert>
+	 -->
+	 
+	
+	<select id="selectProduct" resultType="kr.co.kmarket.vo.ProductVo">
+		SELECT 
+			a.*, 
+			FLOOR(price * (1 - discount / 100)) AS salePrice,
+			b.title AS tit1,
+			c.title AS tit2
+		FROM `km_product` AS a
+		JOIN `km_product_cate1` AS b ON a.cate1=b.cate1
+		JOIN `km_product_cate2` AS c ON a.cate1=c.cate1 AND a.cate2=c.cate2 
+		WHERE `productCode`=#{productCode} <!-- AND `pCount`=#{pCount} -->;   <!-- 나중에 다시 확인할 것 -->
+	</select>
+	
+	<select id="selectProducts" resultType="kr.co.kmarket.vo.ProductVo">
+		SELECT 
+			*,
+			FLOOR(price * (1 - discount / 100)) AS salePrice 
+		FROM `km_product` 
+		WHERE `cate1`=#{cate1} AND `cate2`=#{cate2}
+		<if test="order == 1">ORDER BY `sold` DESC</if> 
+		<if test="order == 2">ORDER BY `salePrice` ASC</if>
+		<if test="order == 3">ORDER BY `salePrice` DESC</if>
+		<if test="order == 4">ORDER BY `score` DESC</if>
+		<if test="order == 5">ORDER BY `review` DESC</if>
+		<if test="order == 6">ORDER BY `rdate` DESC</if>
+		LIMIT #{start}, 10;
+	</select>
+	<select id="selectCategoryTitle" resultType="kr.co.kmarket.vo.CategoriesVo">
+		SELECT 
+			b.cate1,
+			b.cate2,
+			a.title AS tit1,
+			b.title AS tit2
+		FROM `km_product_cate1` AS a
+		JOIN `km_product_cate2` AS b
+		ON a.cate1 = b.cate1
+		WHERE b.cate1=#{cate1} AND b.cate2=#{cate2};
+	</select>
+	
+	<select id="selectProductSearch" resultType="kr.co.kmarket.vo.ProductVo">
+		SELECT *, FLOOR(price * (1 - discount / 100)) AS salePrice  
+		FROM `km_product`
+		WHERE 
+			`name` 		LIKE CONCAT('%', #{keyword}, '%') OR   <!-- 문자열끼리 연결시켜주는 함수 : concat -->
+			`descript` 	LIKE CONCAT('%', #{keyword}, '%')
+		ORDER BY `sold` DESC;
+	</select>
+	
+	<select id="selectProductSearch2" resultType="kr.co.kmarket.vo.ProductVo">
+		SELECT *, FLOOR(price * (1 - discount / 100)) AS salePrice  
+		FROM `km_product`
+		WHERE 
+			<if test="chk1 == 1">`name` LIKE CONCAT('%', #{keyword}, '%')</if>   <!-- 문자열끼리 연결시켜주는 함수 : concat -->
+			<if test="chk2 == 1">AND `descript` LIKE CONCAT('%', #{keyword}, '%')</if>
+			<if test="chk3 == 1">AND FLOOR(price * (1 - discount / 100)) BETWEEN #{min} AND #{max} </if>
+		ORDER BY `sold` DESC;
+	</select>
+	
+	
+	<select id="selectCountTotal" resultType="int">
+		SELECT COUNT(`productCode`) FROM `km_product` WHERE `cate1`=#{cate1} AND `cate2`=#{cate2};
+	</select>
+	
+	<update id="updateProduct"></update>
+	<delete id="deleteProduct"></delete>
+	
+	
+</mapper>

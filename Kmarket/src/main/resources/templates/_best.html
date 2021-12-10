@@ -1,0 +1,29 @@
+
+
+<!-- 베스트상품 배너 -->
+                <article class="best">
+                  <h1><i class="fas fa-crown"></i>베스트상품</h1>
+                  <ol>
+                    <li th:each="best : ${ProductsBest}">
+                      <a th:href="@{/product/view}">
+                        <div class="thumb">
+                          <i>1</i>
+                          <img th:src="@{/thumb/{cate1}/{cate2}/{img}(cate1=${best.cate1},cate2=${best.cate2},img=${best.thumb1})}" alt="t1">
+                        </div>
+                        <h2>[[${best.name}]]</h2>
+                            <!--  <p>[[${best.descript}]]</p>-->
+                            <div class="org_price">
+                              <del>[[${#numbers.formatInteger(best.price, 3, 'COMMA')}]]</del>
+                              <span>[[${best.discount}]]%</span>
+                            </div>
+                            <div class="dis_price">
+                              <ins>[[${#numbers.formatInteger(best.salePrice, 3, 'COMMA')}]]</ins>
+                              <span><span th:if="${best.delivery == 0}"></span>
+                             <strong th:if="${best.delivery != 0}">배송비[[${#numbers.formatInteger(best.delivery, 3, 'COMMA')}]]</strong></span>
+                            </div>
+                      </a>
+                    </li>
+                    
+                  </ol>
+                </article>
+          
