@@ -131,13 +131,18 @@
                         <textarea name="content" readonly>[[${articleVo.content}]]</textarea>
                     </td>
                 </tr>
-            </table>
-            <div>
-                <a th:href="@{/board/delete(group=${group},cate=${cate},seq=${articleVo.seq})}" class="btnDelete">삭제</a>
-                <a th:href="@{/board/modify(group=${group},cate=${cate},seq=${articleVo.seq})}" class="btnModify">수정</a>
-                <a th:href="@{/board/list(group=${group},cate=${cate})}" class="btnList">목록</a>
-            </div>  
-            
+             </table>
+             	<div>
+	            	<th:block th:if= "${session.sessMember.uid == articleVo.uid}">
+		                <a th:href="@{/board/delete(group=${group},cate=${cate},seq=${articleVo.seq})}" class="btnDelete">삭제</a>
+		                <a th:href="@{/board/modify(group=${group},cate=${cate},seq=${articleVo.seq})}" class="btnModify">수정</a>
+		                <a th:href="@{/board/list(group=${group},cate=${cate})}" class="btnList">목록</a>
+	                </th:block>
+	            	<th:block th:if= "${session.sessMember.uid != articleVo.uid}">
+		                <a th:href="@{/board/list(group=${group},cate=${cate})}" class="btnList">목록</a>
+	            	</th:block>
+            	</div>	
+           
             <!-- 댓글리스트 -->
             <section class="commentList">
                 <h3>댓글목록</h3>

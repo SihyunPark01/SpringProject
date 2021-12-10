@@ -9,7 +9,7 @@ $(document).ready(function(){
 				
 				//DB에서 아이디 있는지 확인 작업
 				$.ajax({
-					url: '/member/checkNick',      //'/member/checkNick?nick='+nick,이렇게 잡아줘도 됨					
+					url: '/Farmstory/member/checkNick',      //'/member/checkNick?nick='+nick,이렇게 잡아줘도 됨					
 					type: 'GET',
 					data: jsonData,
 					dataType: 'json',

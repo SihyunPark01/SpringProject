@@ -72,7 +72,7 @@
 								
 				// Ajax 통신
 				$.ajax({
-					url: '/member/checkUid',           			//요청할 서버 주소
+					url: '/Farmstory/member/checkUid',           			//요청할 서버 주소
 					type: 'GET',								//요청방식 Get or Post
 					data: jsonData,								//서버로 전송되는 데이터
 					dataType: 'json',							//서버로부터 전송받는 데이터 형식
@@ -146,7 +146,7 @@
 				
 				//DB에서 아이디 있는지 확인 작업
 				$.ajax({
-					url: '/member/checkNick',      //'/member/checkNick?nick='+nick,이렇게 잡아줘도 됨					
+					url: '/Farmstory/member/checkNick',      //'/member/checkNick?nick='+nick,이렇게 잡아줘도 됨					
 					type: 'GET',
 					data: jsonData,
 					dataType: 'json',
@@ -177,7 +177,7 @@
     			
     			//DB에서 가져와서 아이디 있는지 없는지 확인해봐야하는 작업
     			$.ajax({
-    				url: '/member/checkEmail',
+    				url: '/Farmstory/member/checkEmail',
     				type: 'get',
     				data: jsonData,
     				dataType: 'json',
@@ -202,7 +202,7 @@
 				
 				//DB에서 가져와서 아이디 있는지 없는지 확인해봐야하는 작업
     			$.ajax({
-    				url: '/member/checkHp',
+    				url: '/Farmstory/member/checkHp',
     				type: 'get',
     				data: jsonData,
     				dataType: 'json',
